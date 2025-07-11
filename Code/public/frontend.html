@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WELCOME TO MENTORA</title>
+  <style>
+    body {
+      background-color: rgb(240, 237, 237);
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      max-width: 500px;
+      margin: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    input, textarea {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 5px;
+      cursor: pointer;
+      border-radius: 8px;
+      border: none;
+      background-color: green;
+      color: white;
+    }
+
+    #imageInput {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Intro Splash Screen -->
+  <div id="introPage" class="container">
+    <h1>WELCOME TO MENTORA</h1>
+    <p>Loading...</p>
+  </div>
+
+  <!-- Page 1: User Info -->
+  <div id="page1" class="container" style="display: none;">
+    <h2>Please enter your details</h2>
+    <input type="text" id="nameInput" placeholder="Enter your name..." />
+    <input type="number" id="classInput" placeholder="Enter your class (1, 2, 3...)" />
+    <button onclick="goToNextPage()">OK</button>
+  </div>
+
+  <!-- Page 2: Question Asking -->
+  <div id="page2" class="container" style="display: none;">
+    <h2>Hello, <span id="studentName"></span>!</h2>
+    <textarea id="questionInput" placeholder="Ask a question..."></textarea>
+    <div>
+      <button onclick="getAIResponse()">Ask</button>
+      <button onclick="startVoiceInput()">🎤 Speak</button>
+    </div>
+    <input type="file" id="imageInput" accept="image/*" />
+    <button onclick="uploadImage()">🖼 Upload Image</button>
+    <div id="responseBox" style="margin-top: 20px;"></div>
+  </div>
+
+  <script>
+    // Splash screen auto transition
+    window.onload = function () {
+      setTimeout(() => {
+        document.getElementById("introPage").style.display = "none";
+        document.getElementById("page1").style.display = "block";
+      }, 3000);
+    };
+
+    // Move to question page
+    function goToNextPage() {
+      const name = document.getElementById("nameInput").value.trim();
+      const classNumber = document.getElementById("classInput").value.trim();
+
+      if (name === "" || classNumber === "") {
+        alert("Please enter both your name and class.");
+        return;
+      }
+
+      document.getElementById("studentName").textContent = name;
+      document.getElementById("page1").style.display = "none";
+      document.getElementById("page2").style.display = "block";
+    }
+
+    // Get AI response (text)
+    async function getAIResponse() {
+      const question = document.getElementById("questionInput").value.trim();
+      const responseBox = document.getElementById("responseBox");
+
+      if (question === "") {
+        responseBox.innerHTML = "Please enter a question.";
+        return;
+      }
+
+      responseBox.innerHTML = "⏳ Thinking...";
+
+      try {
+        const res = await fetch('/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question })
+        });
+        const data = await res.json();
+        responseBox.innerHTML = `<strong>🤖 Answer:</strong> ${data.answer}`;
+      } catch (err) {
+        responseBox.innerHTML = "⚠ Error fetching answer.";
+        console.error(err);
+      }
+    }
+
+    // Voice Input
+    function startVoiceInput() {
+      const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.lang = 'en-US';
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      recognition.start();
+
+      recognition.onresult = function (event) {
+        const transcript = event.results[0][0].transcript;
+        document.getElementById("questionInput").value = transcript;
+      };
+
+      recognition.onerror = function (event) {
+        alert('Voice input failed: ' + event.error);
+      };
+    }
+
+    // Image Upload
+    function uploadImage() {
+      const fileInput = document.getElementById('imageInput');
+      const file = fileInput.files[0];
+      const responseBox = document.getElementById("responseBox");
+
+      if (!file) {
+        responseBox.innerHTML = "Please select an image.";
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('image', file);
+
+      responseBox.innerHTML = "⏳ Uploading image...";
+
+      fetch('/upload-image', {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        responseBox.innerHTML = `<strong>🖼 Image Analysis:</strong> ${data.answer}`;
+      })
+      .catch(err => {
+        responseBox.innerHTML = "⚠ Error uploading image.";
+        console.error(err);
+      });
+    }
+  </script>
+</body>
+</html>
