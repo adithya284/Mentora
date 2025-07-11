@@ -1,2 +1,13 @@
 # Mentora
 AI Powered Interactive Learning Assistant for Classrooms
+# Problem description
+Modern classrooms lack real-time, interactive tools to address diverse student needs and keep them engaged. The objective is to create a multimodal AI assistant that:
+
+1. Accepts and processes text, voice, and visual queries from students in real-time.
+2. Provides contextual responses, including textual explanations, charts, and visual aids.
+3. Detects disengagement or confusion using facial expression analysis and suggests interventions.
+
+# Uniqueness of the Project
+The uniqueness of this project lies in its ability to function efficiently in both online and offline environments while offering multi-modal interaction through text, image, and voice inputs. Unlike conventional AI chatbots that depend entirely on internet connectivity for all types of input, Mentora is designed to locally process text and image-based queries even without an internet connection, thanks to the integration of OpenVINO-optimized AI models and Tesseract OCR. This makes it highly adaptable in areas with limited or unstable network access. Additionally, while voice input remains dependent on online browser-based speech recognition, this selective online dependency ensures critical features remain accessible offline. The seamless combination of AI-driven language understanding, optical character recognition, and speech interaction within a simple web-based educational tool makes Mentora stand out as a practical, flexible, and resource-efficient learning assistant for students in diverse learning environments.
+# Overview
+This project, titled Mentora, is an AI-powered educational assistant designed to support students by providing instant answers to academic queries through text, image, and voice inputs. The system integrates a locally hosted neural-chat language model optimized with OpenVINO for efficient inference, paired with Tesseract OCR for image-based text extraction. One of the key highlights of Mentora is its hybrid functionality — it processes text and image queries both online and offline, ensuring reliable access in low-connectivity environments, while voice input operates via browser-based speech recognition and requires an active internet connection. Built with a simple, multi-page web interface using HTML, CSS, and JavaScript, the application offers a guided experience where students can enter their details, ask questions, and receive intelligent responses through multiple modes. This unique combination of AI, computer vision, and selective online dependency makes Mentora a flexible, accessible, and resource-friendly tool to enhance learning experiences, particularly for young students and institutions with limited digital infrastructure.
