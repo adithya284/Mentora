@@ -19,3 +19,6 @@ The Mentora project, while powerful and versatile, has several limitations. It r
 
 # Future Scope
 The future scope of Mentora is vast and promising, with several opportunities to enhance its educational value and usability. Future developments could include integrating a fully offline voice recognition module to eliminate dependency on internet connectivity, thereby expanding accessibility in remote and underserved areas. The AI model itself can be fine-tuned for curriculum-specific responses or regional languages, making it more context-aware and inclusive. Additional features such as multilingual support, speech synthesis for reading answers aloud, interactive diagrams, and adaptive learning modules can further personalize the learning experience. By evolving into a more comprehensive AI tutor, Mentora has the potential to become an essential learning companion for students across diverse educational settings.
+
+Running this model requires downloading it beforehand.
+https://drive.google.com/drive/folders/1Sbcj4PLvx385Sdmcg66kCuce7SGcCQuD
